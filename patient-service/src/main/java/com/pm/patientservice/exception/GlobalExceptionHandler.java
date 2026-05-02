@@ -3,8 +3,6 @@ package com.pm.patientservice.exception;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.pm.patientservice.model.Patient;
-import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
