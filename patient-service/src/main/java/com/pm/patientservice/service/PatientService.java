@@ -1,25 +1,32 @@
 package com.pm.patientservice.service;
 
+import com.pm.patientservice.client.BillingClient;
+import com.pm.patientservice.dto.BillingRequestDTO;
+import com.pm.patientservice.dto.BillingResponseDTO;
 import com.pm.patientservice.dto.PatientRequestDTO;
 import com.pm.patientservice.dto.PatientResponseDTO;
+import com.pm.patientservice.exception.BillingServiceUnavailableException;
 import com.pm.patientservice.exception.EmailAlreadyExistsException;
 import com.pm.patientservice.exception.PatientNotFoundException;
 import com.pm.patientservice.mapper.PatientMapper;
 import com.pm.patientservice.model.Patient;
 import com.pm.patientservice.repository.PatientRepository;
+import feign.FeignException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class PatientService {
-    private PatientRepository patientRepository;
 
-    public PatientService(PatientRepository patientRepository) {
+    private PatientRepository patientRepository;
+    private BillingClient billingClient;
+
+    public PatientService(PatientRepository patientRepository, BillingClient billingClient) {
         this.patientRepository = patientRepository;
+        this.billingClient = billingClient;
     }
 
     public List<PatientResponseDTO> getPatients () {
@@ -36,6 +43,14 @@ public class PatientService {
         }
 
         Patient newPatient = patientRepository.save(PatientMapper.toModel(patientRequestDTO));
+
+        try {
+            BillingRequestDTO billingRequestDTO = new BillingRequestDTO(newPatient.getId(), newPatient.getName(), newPatient.getEmail());
+            BillingResponseDTO billingResponseDTO = billingClient.createBillingAccount(billingRequestDTO);
+        } catch (FeignException e) {
+            throw new BillingServiceUnavailableException(e.getMessage());
+        }
+
 
         return PatientMapper.toDTO(newPatient);
     }

@@ -42,4 +42,9 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(errors);
     }
+
+    @ExceptionHandler(BillingServiceUnavailableException.class)
+    public ResponseEntity<String> handleBillingDown() {
+        return ResponseEntity.status(503).body("Billing service unavailable");
+    }
 }
