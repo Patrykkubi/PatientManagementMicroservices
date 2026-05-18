@@ -8,6 +8,7 @@ import com.pm.patientservice.dto.PatientResponseDTO;
 import com.pm.patientservice.exception.BillingServiceUnavailableException;
 import com.pm.patientservice.exception.EmailAlreadyExistsException;
 import com.pm.patientservice.exception.PatientNotFoundException;
+import com.pm.patientservice.kafka.KafkaProducer;
 import com.pm.patientservice.mapper.PatientMapper;
 import com.pm.patientservice.model.Patient;
 import com.pm.patientservice.repository.PatientRepository;
@@ -21,12 +22,14 @@ import java.util.UUID;
 @Service
 public class PatientService {
 
-    private PatientRepository patientRepository;
-    private BillingClient billingClient;
+    private final PatientRepository patientRepository;
+    private final BillingClient billingClient;
+    private final KafkaProducer kafkaProducer;
 
-    public PatientService(PatientRepository patientRepository, BillingClient billingClient) {
+    public PatientService(PatientRepository patientRepository, BillingClient billingClient, KafkaProducer kafkaProducer) {
         this.patientRepository = patientRepository;
         this.billingClient = billingClient;
+        this.kafkaProducer = kafkaProducer;
     }
 
     public List<PatientResponseDTO> getPatients () {
@@ -44,6 +47,7 @@ public class PatientService {
 
         Patient newPatient = patientRepository.save(PatientMapper.toModel(patientRequestDTO));
 
+        // uwzglednic przypadek bledu z dzialaniem billingClient
         try {
             BillingRequestDTO billingRequestDTO = new BillingRequestDTO(newPatient.getId(), newPatient.getName(), newPatient.getEmail());
             BillingResponseDTO billingResponseDTO = billingClient.createBillingAccount(billingRequestDTO);
@@ -51,6 +55,7 @@ public class PatientService {
             throw new BillingServiceUnavailableException(e.getMessage());
         }
 
+        kafkaProducer.sendEvent(newPatient);
 
         return PatientMapper.toDTO(newPatient);
     }

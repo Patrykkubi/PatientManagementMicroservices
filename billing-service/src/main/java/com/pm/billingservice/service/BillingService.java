@@ -29,4 +29,5 @@ public class BillingService {
         );
     }
 
+    // demo rest connected microservice, so only has createAccount endpoint
 }
