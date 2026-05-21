@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+//TODO:: CHANGE FROM FEIGNCLIENT TO RESTCLIENT
 @FeignClient(name = "Billing-service", url = "${Billing.service.url}")
 public interface BillingClient {
 
