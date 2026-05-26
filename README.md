@@ -4,6 +4,14 @@ A backend distributed system built with Spring Boot demonstrating microservices 
 
 <img width="1536" height="1024" alt="architecture" src="https://github.com/user-attachments/assets/cca22a22-b977-4d15-960d-9f969ba33846" />
 
+## Key Features
+
+- Microservices architecture with independent services
+- API Gateway as a single entry point
+- JWT-based authentication
+- Kafka-based event-driven communication
+- REST-based inter-service communication (Feign/WebClient)
+- Dockerized services
 
 ## Architecture
 
@@ -20,6 +28,7 @@ Communication patterns:
 - REST (Spring Web / WebClient)
 - Kafka (event-driven messaging)
 - JWT authentication via API Gateway
+  
   
 ## Tech Stack
 
@@ -71,12 +80,3 @@ Handles billing account creation and processing.
 
 ### Analytics Service
 Consumes Kafka events and processes analytics data.
-
-## Key Features
-
-- Microservices architecture with independent services
-- API Gateway as a single entry point
-- JWT-based authentication
-- Kafka-based event-driven communication
-- REST-based inter-service communication (Feign/WebClient)
-- Dockerized services
