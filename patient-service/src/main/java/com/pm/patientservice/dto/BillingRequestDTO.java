@@ -16,11 +16,6 @@ public class BillingRequestDTO {
     @Email
     private String patientEmail;
 
-    public BillingRequestDTO() {}
-
-    public BillingRequestDTO(UUID id, String name, String email) {
-    }
-
     public UUID getPatientId() {
         return patientId;
     }

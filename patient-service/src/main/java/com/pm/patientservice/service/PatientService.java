@@ -9,6 +9,7 @@ import com.pm.patientservice.exception.BillingServiceUnavailableException;
 import com.pm.patientservice.exception.EmailAlreadyExistsException;
 import com.pm.patientservice.exception.PatientNotFoundException;
 import com.pm.patientservice.kafka.KafkaProducer;
+import com.pm.patientservice.mapper.BillingMapper;
 import com.pm.patientservice.mapper.PatientMapper;
 import com.pm.patientservice.model.Patient;
 import com.pm.patientservice.repository.PatientRepository;
@@ -36,7 +37,6 @@ public class PatientService {
         List<Patient> patients = patientRepository.findAll();
 
         return patients.stream().map(PatientMapper::toDTO).toList();
-//        return patients.stream().map(patient -> PatientMapper.toDTO(patient)).toList();
     }
 
     public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
@@ -49,8 +49,7 @@ public class PatientService {
 
         // uwzglednic przypadek bledu z dzialaniem billingClient
         try {
-            BillingRequestDTO billingRequestDTO = new BillingRequestDTO(newPatient.getId(), newPatient.getName(), newPatient.getEmail());
-            BillingResponseDTO billingResponseDTO = billingClient.createBillingAccount(billingRequestDTO);
+            BillingResponseDTO billingResponseDTO = billingClient.createBillingAccount(BillingMapper.toBillingRequest(newPatient));
         } catch (FeignException e) {
             throw new BillingServiceUnavailableException(e.getMessage());
         }

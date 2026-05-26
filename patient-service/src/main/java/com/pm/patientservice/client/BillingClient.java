@@ -2,14 +2,25 @@ package com.pm.patientservice.client;
 
 import com.pm.patientservice.dto.BillingRequestDTO;
 import com.pm.patientservice.dto.BillingResponseDTO;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
-//TODO:: CHANGE FROM FEIGNCLIENT TO RESTCLIENT
-@FeignClient(name = "Billing-service", url = "${Billing.service.url}")
-public interface BillingClient {
+@Service
+public class BillingClient {
 
-    @PostMapping("/billing/accounts")
-    BillingResponseDTO createBillingAccount(@RequestBody BillingRequestDTO billingRequestDTO);
+    private final WebClient billingWebClient;
+
+    public BillingClient(WebClient billingWebClient) {
+        this.billingWebClient = billingWebClient;
+    }
+
+    public BillingResponseDTO createBillingAccount(BillingRequestDTO request) {
+
+        return billingWebClient.post()
+                .uri("/billing/accounts")
+                .bodyValue(request)
+                .retrieve()
+                .bodyToMono(BillingResponseDTO.class)
+                .block();
+    }
 }
