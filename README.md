@@ -2,7 +2,7 @@
 
 A backend distributed system built with Spring Boot demonstrating microservices architecture, event-driven communication, API Gateway routing, authentication, and inter-service communication using Kafka and REST.
 
-<img width="1705" height="766" alt="image" src="https://github.com/user-attachments/assets/fbe78a39-eed6-42ff-b154-b2cb9f79f85c" />
+<img width="1536" height="1024" alt="architecture" src="https://github.com/user-attachments/assets/cca22a22-b977-4d15-960d-9f969ba33846" />
 
 
 ## Architecture
