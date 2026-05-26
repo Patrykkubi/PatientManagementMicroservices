@@ -14,7 +14,7 @@ This system consists of multiple independent microservices:
 - Patient Service – manages patient data
 - Billing Service – handles billing/account creation logic
 - Analytics Service – processes events and analytics data
-- API Requests Service – internal communication layer
+- API Requests Service – internal test communication layer
 
 Communication patterns:
 - REST (Spring Web / WebClient)
