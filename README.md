@@ -10,7 +10,7 @@ A backend distributed system built with Spring Boot demonstrating microservices 
 - API Gateway as a single entry point
 - JWT-based authentication
 - Kafka-based event-driven communication
-- REST-based inter-service communication (Feign/WebClient)
+- REST-based inter-service communication (WebClient)
 - Dockerized services
 
 ## Architecture
@@ -36,7 +36,7 @@ Communication patterns:
 - Spring Boot
 - Spring Cloud Gateway
 - Spring Security + JWT
-- Spring WebFlux / WebClient
+- Spring WebClient
 - Kafka
 - Docker
 - Maven
